@@ -48,7 +48,7 @@ Now we need to get these metrics into Prometheus.
 In another terminal, use Podman to start an ephemeral Prometheus in a container, and use the `host` networking option, which will allow the container to access the Spring Boot app on `localhost`:
 
     podman run --net=host \
-        -v prometheus.yml:/etc/prometheus/prometheus.yml \
+        -v ./prometheus.yml:/etc/prometheus/prometheus.yml:Z \
         prom/prometheus
         
 Check the Prometheus console at <http://localhost:9090>.
