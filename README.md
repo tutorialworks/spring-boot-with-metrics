@@ -2,6 +2,8 @@
 
 This demo app shows how a Spring Boot application can expose a Prometheus metrics endpoint for scraping.
 
+- For Java 11+
+
 🚼 The app was initially created with [Spring Initializr][init] and then by following the [RESTful service tutorial on spring.io][rest-tutorial].
 
 ## To run
@@ -25,6 +27,15 @@ This will expose Prometheus metrics at `/actuator/prometheus`. This is a simple 
     # TYPE tomcat_sessions_alive_max_seconds gauge
     tomcat_sessions_alive_max_seconds 0.0
     ...    
+
+Next, try accessing the API in the app at `http://localhost:8080/greeting` either in a web browser or using `curl`. Check the `/actuator/prometheus` endpoint again. You should see the `http_server_requests_seconds_sum` metric increase. You will also see a new metric `greeting_time_seconds` which is a custom metric added to the app:
+
+    $ curl http://localhost:8080/actuator/prometheus | grep greeting_time_seconds
+    # HELP greeting_time_seconds Time taken to return greeting
+    # TYPE greeting_time_seconds summary
+    greeting_time_seconds{class="com.tutorialworks.demos.springbootwithmetrics.GreetingController",exception="none",method="greeting",quantile="0.5",} 0.0
+    greeting_time_seconds{class="com.tutorialworks.demos.springbootwithmetrics.GreetingController",exception="none",method="greeting",quantile="0.9",} 0.0
+    ...
 
 ## Timing a custom method
 
